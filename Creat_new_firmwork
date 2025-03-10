@@ -1,0 +1,121 @@
+Creat new firmwork
+# 克隆PX4源码
+git clone https://github.com/PX4/PX4-Autopilot.git
+cd PX4-Autopilot
+
+# 安装所需工具链
+bash Tools/setup/ubuntu.sh
+
+# 为自定义机架创建一个新文件
+touch ROMFS/px4fmu_common/init.d/airframes/4900_custom_quad.hil
+chmod +x ROMFS/px4fmu_common/init.d/airframes/4900_custom_quad.hil
+
+#!/bin/sh
+#
+# @name Custom Quadrotor X Configuration
+#
+# @type Quadrotor x
+# @class Copter
+#
+# @maintainer Feiziben
+#
+# @board px4_fmu-v5 exclude
+# @board px4_fmu-v4 exclude
+# @board px4_fmu-v4pro exclude
+# @board px4_fmu-v5x exclude
+# @board px4_fmu-v6x exclude
+
+# 设置机架类型为通用多旋翼
+param set-default SYS_AUTOSTART 4001
+
+# 声明这是一个多旋翼
+param set-default CA_AIRFRAME 0
+
+# 设定这是一个四旋翼
+param set-default CA_ROTOR_COUNT 4
+
+# 设置控制分配矩阵类型为多旋翼
+param set-default CA_R_REV 0
+
+# 设置伺服数量为0（四旋翼不需要）
+param set-default CA_SV_CS_COUNT 0
+
+# 电机A位置参数 (左前) - 注意单位转换：毫米→米
+param set-default CA_ROTOR0_PX -0.19546
+param set-default CA_ROTOR0_PY 0.14886
+param set-default CA_ROTOR0_PZ 0.0
+# 电机A为逆时针旋转，负扭矩系数
+param set-default CA_ROTOR0_KM -0.05
+# 设置推力系数
+param set-default CA_ROTOR0_CT 6.5
+
+# 电机B位置参数 (右前)
+param set-default CA_ROTOR1_PX 0.19546
+param set-default CA_ROTOR1_PY 0.15114
+param set-default CA_ROTOR1_PZ 0.0
+# 电机B为顺时针旋转，正扭矩系数
+param set-default CA_ROTOR1_KM 0.05
+param set-default CA_ROTOR1_CT 6.5
+
+# 电机C位置参数 (左后)
+param set-default CA_ROTOR2_PX -0.19546
+param set-default CA_ROTOR2_PY -0.15114
+param set-default CA_ROTOR2_PZ 0.0
+# 电机C为顺时针旋转，正扭矩系数
+param set-default CA_ROTOR2_KM 0.05
+param set-default CA_ROTOR2_CT 6.5
+
+# 电机D位置参数 (右后)
+param set-default CA_ROTOR3_PX 0.19546
+param set-default CA_ROTOR3_PY -0.14886
+param set-default CA_ROTOR3_PZ 0.0
+# 电机D为逆时针旋转，负扭矩系数
+param set-default CA_ROTOR3_KM -0.05
+param set-default CA_ROTOR3_CT 6.5
+
+# 设置电机旋转方向和布局
+# X型四旋翼通常设置为：
+# 1,CCW; 2,CW; 3,CW; 4,CCW
+param set-default CA_ROTOR0_AX 0.0
+param set-default CA_ROTOR0_AY 0.0
+param set-default CA_ROTOR0_AZ 1.0
+param set-default CA_ROTOR1_AX 0.0
+param set-default CA_ROTOR1_AY 0.0
+param set-default CA_ROTOR1_AZ 1.0
+param set-default CA_ROTOR2_AX 0.0
+param set-default CA_ROTOR2_AY 0.0
+param set-default CA_ROTOR2_AZ 1.0
+param set-default CA_ROTOR3_AX 0.0
+param set-default CA_ROTOR3_AY 0.0
+param set-default CA_ROTOR3_AZ 1.0
+
+# 基本飞行参数设置
+param set-default MC_ROLLRATE_P 0.16
+param set-default MC_ROLLRATE_I 0.05
+param set-default MC_ROLLRATE_D 0.003
+param set-default MC_PITCHRATE_P 0.16
+param set-default MC_PITCHRATE_I 0.05
+param set-default MC_PITCHRATE_D 0.003
+param set-default MC_YAWRATE_P 0.2
+param set-default MC_YAWRATE_I 0.1
+param set-default MC_YAWRATE_D 0.0
+
+# 设置默认的PWM输出
+param set-default PWM_MAIN_FUNC1 101
+param set-default PWM_MAIN_FUNC2 102
+param set-default PWM_MAIN_FUNC3 103
+param set-default PWM_MAIN_FUNC4 104
+
+# 加载通用混控器
+set MIXER quad_x
+
+在添加ROMFS/px4fmu_common/init.d/airframes/CMakeLists.txt
+# 在文件末尾添加
+list(APPEND config_module_list
+    # 添加这一行：
+    4900_custom_quad
+)
+
+
+
+

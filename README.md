@@ -131,3 +131,5 @@ GitHub下载PX4源码
 mavros
 
 [【ROS】MAVROS基础知识和使用-CSDN博客](https://blog.csdn.net/caiqidong321/article/details/132013439)
+
+[自定义机架](https://blog.csdn.net/qq_38768959/article/details/124945512)
